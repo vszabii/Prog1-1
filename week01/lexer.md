@@ -111,15 +111,15 @@ x | Maga az **x** karakter
 
 Ezekkel a kifejezésekkel tudunk karaktereket, illetve karakter csoportokat definiálni. Karaktereken, illetve karakter csoportokon tudjuk az alábbi műveleteket alkalmazni:
 
-Művelet | Példa | Jelentése 
---- | --- | ---
-* | r* | Akármennyi (tehát 0, 1, 2, ...) **r**
-+ | r+ | Akármennyi, de legalább egy **r**
-? | r? | Vagy 0 vagy 1 darab **r** (mondhatnánk hogy **r** opcionális)
+| Művelet | Példa | Jelentése |
+| --- | --- | --- |
+| * | r* | Akármennyi (tehát 0, 1, 2, ...) **r** |
+| + | r+ | Akármennyi, de legalább egy **r** |
+| ? | r? | Vagy 0 vagy 1 darab **r** (mondhatnánk hogy **r** opcionális) |
 
 [A szintaxisról minden kíváncsiságot kimerítő terjedelemben](http://web.mit.edu/gnu/doc/html/flex_2.html)
 
-A szabályok definiálásánál meg kell határoznunk, hogy abban az esetben, ha találtunk valamit ami illeszkedik a mintára, akkor milyen utasításokat hajtson végre a program. Az utasítások meghatározásakor a yytext változó (string típusú) tárolja azt, ami illeszkedett a szabályra.
+A szabályok definiálásánál  meg kell határoznunk, hogy abban az esetben, ha találtunk valamit ami illeszkedik a mintára, akkor milyen utasításokat hajtson végre a program. Az utasítások meghatározásakor a yytext változó (string típusú) tárolja azt, ami illeszkedett a szabályra.
 
 Az utasításokban hivatkozhazunk már deklarált változókra:
 
