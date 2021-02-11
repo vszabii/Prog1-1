@@ -5,7 +5,7 @@
 # Mik is lennének ezek?
 A lexikális elemzők (későbbiekben elvétve: lexer(ek)) feladatát úgy tudnám összefoglalni, hogy a bemetükről beolvasott stringet feldolgozza valamilyen módon; elemeire bontja az eredeti szöveget általunk meghatározott szabályok szerint, és a kapott eredményt (ezeket tokeneknek vagy szimbólumoknak is hívjuk) rendelkezésünkre bocsájtja; hogy ezekkel mit teszünk, már rajtunk múlik. Ignorálhatjuk a tokent, kiírathatjuk fájlba/stdout-ra, továbbadhatjuk egy parsernek, eltárolhatjuk egy adatszerkezetben... Gyakorlatilag akármit amit egy programozási nyelvben adattal tehetünk.
 
-A Flex (illetve szellemi elődje, a Lex) egy program, ami helyenként sajátos szintaxisra és C/C++ szintaxisra épülő forrást fordít C, illetve C++ kódra. Beállításokban és funkciókban gazdag programról van szó. Lehetőségünk van úgy is megírni a flex forrásunkat, hogy az egy önálló programra forduljon legvégül; de van lehetőségünk arra is, hogy a lexerünket például egy C++ osztállyá fordítsa, amit később ugyanúgy használhatunk más programokban, mint bármely osztályt.
+A Flex (illetve szellemi elődje, a Lex) egy program amivel lexikális elemzőket tudunk **generálni** úgy, hogy helyenként sajátos szintaxisra és C/C++ szintaxisra épülő forrást fordít C, illetve C++ kódra. Beállításokban és funkciókban gazdag programról van szó. Lehetőségünk van úgy is megírni a flex forrásunkat, hogy az egy önálló programra forduljon legvégül; de van lehetőségünk arra is, hogy a lexerünket például egy C++ osztállyá fordítsa, amit később ugyanúgy használhatunk más programokban, mint bármely osztályt.
 
 A Lex/Flex (illetve a hozzájuk szorosan kötődő Yacc/GNU Bison parserek) több évtizedes múltra tekintenek vissza, nagyjából a C nyelvvel egy korban mozognak. Népszerűségét növelte, hogy egy akkoriban elég népszerűnek számító operációs rendszer (UNIX) alapértelmezetten tartalmazta. Népszerűsége révén számos más programozási nyelvben írt lexer átvette "megjelenését" (pl.: PLY).
 
@@ -154,3 +154,100 @@ De akár írhatunk a kimenetre. Igazából bármit tehetünk, amit a C/C++ nyelv
 Ebben a részben implementálhatjuk a programunk többi részét, ehhez sem fog nyúlni a flex fordítás közben, tehát itt valid C++ kódot igyekezzünk írni.
 
 # Mindez a gyakorlatban
+
+## real.l
+
+```c
+%{
+#include <stdio.h>	
+int realnum = 0;
+%}
+digit [0-9]
+```
+
+Az include utasítással "importáljuk" a C standard I/O köynvtárát, hogy tudjunk a kimenetre írni.
+
+Továbbá deklarálunk egy int típusú **realnum** változót és nulla értékkel inicializáljuk. Ebben a változóban fogjuk eltárolni, hogy hány valós számot talált a programunk.
+
+Definiálunk továbbá egy karakter csoportot **digit** néven, ami a tízes számrendszerben lévő számjegyeket tartalmazza. Ezt később használhatjuk és hsználni is fogjuk a szabályok definiálására.
+
+```c
+%%
+{digit}*(\.{digit}+)? 
+{
+    realnum++;
+	  printf("[realnum: %s %f]", yytext, atof(yytext));
+}
+%%
+```
+
+Ez a szabály fogja meghatározni, hogy a lexerünkben mi számít valós számnak. A szabályt, a könnyebb megértés érdekében bontsuk két részre:
+`{digit}*` és `{(\.{digit}+)?}`. Ha ezeket részenként sikerül megértenünk, akkor szinte készen vagyunk a szabály "visszafejtésével", mivel ha ezt a két részt egymás után írjuk a szabályban, az azt jelenti, hogy ha egy string első része illeszkedik az első mintára és a második része a másodikra, akkor az egész szabályra illeszkedik (ezt hívjuk majd konkatenációnak).
+
+A `{digit}*` szabály nem jelent mást, mint hogy adott a digit karaktercsoport, és ebből a karaktercsoportból bármennyi áll a vizsgált string elején (akár nulla is!) illeszkedni fog erre a részmintára.
+
+A `(\.{digit}+)?` már egy kicsivel nehezebb dió. Látjuk, hogy a zárójel közötti részt ellátunk egy `?` operátorral, azaz akármilyen mintát is határoztunk meg a zárójeleken belül, az a minta egyszer fordulhat elő maximum (mondhatni opcionális). 
+
+A zárójelben lévő rész egy `\.`-tal kezd. Mivel a `.` karakternek speciális jelentése van a Flexben, így ha szószerint a pont ASCII karakterre akarunk hivatkozni, akkor azt úgy tudjuk megtenni, ha egy \ jelet írunk elé (ezt hívjuk [escape characternek](https://en.wikipedia.org/wiki/Escape_character)). Tehát a második részminta egy ponttal kezdődik. Mi van még? `{digit}+`, Azaz legalább egy számjegy. A második részminta tehát így néz ki: egy pontot követ legalább 1, de ezen kívül akárhány számjegy; ez az egész minta pedig opcionális lesz a valós számainkban.
+
+Ha egy fedél alá hozzuk a két mintát a szabályunk: bármennyi számjegyet (akár nullát is) opcionálisan követ egy pont és ha van pont akkor azt követnie kell legalább 1 számjegynek.
+
+Valid valós számok a lexerünk számára:
+
+```
+.314
+1221
+6.022
+07.27
+0.0
+```
+
+Ezek után rendelkezünk arról, hogy mit szeretnénk tenni azzal a stringgel, ami illeszkedik a mintára.
+```c
+{
+    realnum++;
+	  printf("[realnum: %s %f]", yytext, atof(yytext));
+}
+```
+
+Megnöveljük a realnum változó értékét, majd kiíratjuk a stringet ami illeszkedett, illetve a lebegőpontos ábrázolását.
+
+```
+Megjegyzés:
+
+Az illeszkedő valós szám és a lebegőpontos változata között lehetnek eltérések, mivel több valós szám van (matematikában végtelen sok, a programunkban... memória kérdése, hogy mennyire nagyon nagyon sok), de 64 biten (az atof double típusú értékre konvertálja a stringet, amit 64 biten ábrázolunk azon a rendszereken, amiken mi dolgozunk) csak véges számú számot tudunk ábrázolni, így ha olyan stringet akarunk doublelá alakítani, aminek nincsen pontos megfelelője, akkor egy kerekített értéket kapunk (erről bővebben majd Alkalmazott matematikán).
+```
+
+```c
+int main(){
+	yylex();
+	printf("Number of real numbers: %d\n", realnum);
+	return 0;
+}
+```
+
+Végül megírjuk a programunk többi részét. Lefuttatjuk a lexerünket, amit majd a Flex fog generálni a `yylex()` utasítással, majd kiírjuk a kimenetre, hogy hány valós számot találtunk. Ezután a program terminál.
+
+Parancsok a fordításhoz
+
+```bash
+flex real.l
+gcc lex.yy.c -o real -lfle
+```
+
+Előtte érdemes telepíteni a flex packaget. Ubuntun ez:
+```
+sudo apt install flex
+```
+
+## leet.l
+A forrás egyetlen szabályt tartalmaz, ami nem egetrengetően nehéz, és a többi része a programnak pedig C black magic (legalábbis még számunkra az), így nem részletezem a programot nagyon.
+
+A `.` karakter tetszőleges karaktert jelöl a Flexben, így ez a szabály annyit csinál, hogy bármilyen karakter illeszkedik rá, így minden karakternél, amit kap a porgam a bemenetről, megnézzük hogy tartalmazza-e a LEET szótárunk azt a karaktert, ha igen kiíratjuk valamelyik alternatáv alakját. Ha nem találta meg a szótárban  akkor pedig simán kiírja a karaktert.
+
+Parancsok a fordításhoz
+
+```bash
+flex leet.l
+gcc lex.yy.c -o leet -lfle
+```
