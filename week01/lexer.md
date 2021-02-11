@@ -231,7 +231,7 @@ Parancsok a fordításhoz
 
 ```bash
 flex real.l
-gcc lex.yy.c -o real -lfle
+gcc lex.yy.c -o real -lfl
 ```
 
 Előtte érdemes telepíteni a flex packaget. Ubuntun ez:
@@ -248,5 +248,5 @@ Parancsok a fordításhoz
 
 ```bash
 flex leet.l
-gcc lex.yy.c -o leet -lfle
+gcc lex.yy.c -o leet -lfl
 ```
