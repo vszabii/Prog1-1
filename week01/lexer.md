@@ -190,14 +190,14 @@ A `(\.{digit}+)?` már egy kicsivel nehezebb dió. Látjuk, hogy a zárójel kö
 
 A zárójelben lévő rész egy `\.`-tal kezd. Mivel a `.` karakternek speciális jelentése van a Flexben, így ha szószerint a pont ASCII karakterre akarunk hivatkozni, akkor azt úgy tudjuk megtenni, ha egy \ jelet írunk elé (ezt hívjuk [escape characternek](https://en.wikipedia.org/wiki/Escape_character)). Tehát a második részminta egy ponttal kezdődik. Mi van még? `{digit}+`, Azaz legalább egy számjegy. A második részminta tehát így néz ki: egy pontot követ legalább 1, de ezen kívül akárhány számjegy; ez az egész minta pedig opcionális lesz a valós számainkban.
 
-Ha egy fedél alá hozzuk a két mintát a szabályunk: bármennyi számjegyet (akár nullát is) opcionálisan követ egy pont és ha van pont akkor azt követnie kell legalább 1 számjegynek.
+Ha egy fedél alá hozzuk a két mintát, a szabályunk: bármennyi számjegyet (akár nullát is) opcionálisan követ egy pont és ha van pont akkor azt követnie kell legalább 1 számjegynek.
 
 Valid valós számok a lexerünk számára:
 
 ```
 .314
-1221
 6.022
+1221
 07.27
 0.0
 ```
@@ -215,7 +215,7 @@ Megnöveljük a realnum változó értékét, majd kiíratjuk a stringet ami ill
 
 *Megjegyzés:*
 
-*Az illeszkedő valós szám és a lebegőpontos változata között lehetnek eltérések, mivel több valós szám van (matematikában végtelen sok, a programunkban... memória kérdése, hogy mennyire nagyon nagyon sok), de 64 biten (az atof double típusú értékre konvertálja a stringet, amit 64 biten ábrázolunk azon a rendszereken, amiken mi dolgozunk) csak véges számú számot tudunk ábrázolni, így ha olyan stringet akarunk doublelá alakítani, aminek nincsen pontos megfelelője, akkor egy kerekített értéket kapunk (erről bővebben majd Alkalmazott matematikán).*
+*Az illeszkedő valós szám és a lebegőpontos változata között lehetnek eltérések, mivel több valós szám van (matematikában végtelen sok, a programunkban... memória kérdése, hogy mennyire nagyon nagyon sok), de 64 biten (az atof double típusú értékre konvertálja a stringet, a doublet pedig 64 biten ábrázolunk azokon a rendszereken, amiken mi dolgozunk) csak véges számú számot tudunk ábrázolni, így ha olyan stringet akarunk doublelá alakítani, aminek nincsen pontos megfelelője, akkor egy kerekített értéket kapunk (erről bővebben majd Alkalmazott matematikán).*
 
 ```c
 int main(){
