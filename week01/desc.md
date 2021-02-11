@@ -21,6 +21,6 @@
 
 * A változtatásokat commitoljuk és ne felejtsük el pusholni a repónkba!
 
-**Határidő *(csak hogy szokjuk)*: 2021. 02. 15. 00:01**
+**Határidő *(csak hogy szokjuk)*: 2021. 02. 22. 00:01**
 
 [Lexerek, Flex](./lexer.md)
