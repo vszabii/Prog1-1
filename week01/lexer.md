@@ -212,11 +212,10 @@ Ezek után rendelkezünk arról, hogy mit szeretnénk tenni azzal a stringgel, a
 
 Megnöveljük a realnum változó értékét, majd kiíratjuk a stringet ami illeszkedett, illetve a lebegőpontos ábrázolását.
 
-```
-Megjegyzés:
 
-Az illeszkedő valós szám és a lebegőpontos változata között lehetnek eltérések, mivel több valós szám van (matematikában végtelen sok, a programunkban... memória kérdése, hogy mennyire nagyon nagyon sok), de 64 biten (az atof double típusú értékre konvertálja a stringet, amit 64 biten ábrázolunk azon a rendszereken, amiken mi dolgozunk) csak véges számú számot tudunk ábrázolni, így ha olyan stringet akarunk doublelá alakítani, aminek nincsen pontos megfelelője, akkor egy kerekített értéket kapunk (erről bővebben majd Alkalmazott matematikán).
-```
+*Megjegyzés:*
+
+*Az illeszkedő valós szám és a lebegőpontos változata között lehetnek eltérések, mivel több valós szám van (matematikában végtelen sok, a programunkban... memória kérdése, hogy mennyire nagyon nagyon sok), de 64 biten (az atof double típusú értékre konvertálja a stringet, amit 64 biten ábrázolunk azon a rendszereken, amiken mi dolgozunk) csak véges számú számot tudunk ábrázolni, így ha olyan stringet akarunk doublelá alakítani, aminek nincsen pontos megfelelője, akkor egy kerekített értéket kapunk (erről bővebben majd Alkalmazott matematikán).*
 
 ```c
 int main(){
