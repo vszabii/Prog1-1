@@ -2,15 +2,18 @@
 
 **Ez a rész nem lesz számonkérve semmilyen formában, csupán "érdekességnek" szánom**
 
-# Mik is lennének ezek?
+## Mik is lennének ezek?
+
 A lexikális elemzők (későbbiekben elvétve: lexer(ek)) feladatát úgy tudnám összefoglalni, hogy a bemetükről beolvasott stringet feldolgozza valamilyen módon; elemeire bontja az eredeti szöveget általunk meghatározott szabályok szerint, és a kapott eredményt (ezeket tokeneknek vagy szimbólumoknak is hívjuk) rendelkezésünkre bocsájtja; hogy ezekkel mit teszünk, már rajtunk múlik. Ignorálhatjuk a tokent, kiírathatjuk fájlba/stdout-ra, továbbadhatjuk egy parsernek, eltárolhatjuk egy adatszerkezetben... Gyakorlatilag akármit amit egy programozási nyelvben adattal tehetünk.
 
 A Flex (illetve szellemi elődje, a Lex) egy program amivel lexikális elemzőket tudunk **generálni** úgy, hogy helyenként sajátos szintaxisra és C/C++ szintaxisra épülő forrást fordít C, illetve C++ kódra. Beállításokban és funkciókban gazdag programról van szó. Lehetőségünk van úgy is megírni a flex forrásunkat, hogy az egy önálló programra forduljon legvégül; de van lehetőségünk arra is, hogy a lexerünket például egy C++ osztállyá fordítsa, amit később ugyanúgy használhatunk más programokban, mint bármely osztályt.
 
 A Lex/Flex (illetve a hozzájuk szorosan kötődő Yacc/GNU Bison parserek) több évtizedes múltra tekintenek vissza, nagyjából a C nyelvvel egy korban mozognak. Népszerűségét növelte, hogy egy akkoriban elég népszerűnek számító operációs rendszer (UNIX) alapértelmezetten tartalmazta. Népszerűsége révén számos más programozási nyelvben írt lexer átvette "megjelenését" (pl.: PLY).
 
-# Mire használjuk a lexikális elemzőket?
+## Mire használjuk a lexikális elemzőket?
+
 A teljesség igénye nélkül:
+
 - Fordítóprogramokban (compilerek, interpreterek)
 - Olyan (szöveg alapú) formátumok feldolgozására, amiknek jól definiált a struktórája (XML, HTML, JSON, CSS)
 - Saját magunk által definiált "nyelvek" feldolgozására; ezek lehetnek:
@@ -19,7 +22,8 @@ A teljesség igénye nélkül:
 
 **Az előbbi példákra általában igaz, hogy lexikális elemzőket IS használunk hozzájuk, de sokszor szükségünk van még egy parserre legalább**
 
-# Mit nem tudnak a lexerek?
+## Mit nem tudnak a lexerek?
+
 Az alábbiakbak a compilerekben használt lexereket taglaljuk, azonban minden lexer ezekkel a határokkal rendelkezik.
 
 ---
@@ -31,10 +35,11 @@ num int ; 3 =
 ```
 
 A ***tetszőleges C++ compiler*** lexere számára ez egy hibátlan sor. Miden ami szerepel benne lexikálisan helyes:
-  - a *num* egy azonosítónév
-  - az *int* egy beépített típus neve
-  - a *;* és az *=* szimbólumok is ismerősek számára
-  - a *3* pedig egy literál
+
+- a *num* egy azonosítónév
+- az *int* egy beépített típus neve
+- a *;* és az *=* szimbólumok is ismerősek számára
+- a *3* pedig egy literál
 
 És mégis, ez az abomináció nem C++ vagy C, vagy akármilyen jelenléttel bíró nyelv *(talán Javascriptnek elmegy)*.
 
@@ -58,10 +63,12 @@ Ha ezt megkíséreljük lefordítani, a ***tetszőleges C++ compiler*** fordít�
 
 *Nem tud a nyelv szemantikai szabályairól*
 
-# Flex
+## Flex
 
 ### Egy Flex forrás felépítése
+
 Minden Flex forrás a következő mintát követi:
+
 ```
 Definíciók
 %%
@@ -73,6 +80,7 @@ A saját programkódunk
 ### Definíciók
 
 A definíciók szekcióban elhelyezhetünk olyan kódot, amit szeretnénk, ha a flex a fordítás során érintetlenül hagyna, pl.:
+
 ```c
 %{
 #include <math.h>
@@ -153,13 +161,13 @@ De akár írhatunk a kimenetre. Igazából bármit tehetünk, amit a C/C++ nyelv
 
 Ebben a részben implementálhatjuk a programunk többi részét, ehhez sem fog nyúlni a flex fordítás közben, tehát itt valid C++ kódot igyekezzünk írni.
 
-# Mindez a gyakorlatban
+## Mindez a gyakorlatban
 
-## real.l
+### real.l
 
 ```c
 %{
-#include <stdio.h>	
+#include <stdio.h>
 int realnum = 0;
 %}
 digit [0-9]
@@ -203,6 +211,7 @@ Valid valós számok a lexerünk számára:
 ```
 
 Ezek után rendelkezünk arról, hogy mit szeretnénk tenni azzal a stringgel, ami illeszkedik a mintára.
+
 ```c
 {
     realnum++;
@@ -235,11 +244,13 @@ gcc lex.yy.c -o real -lfl
 ```
 
 Előtte érdemes telepíteni a flex packaget. Ubuntun ez:
+
 ```
 sudo apt install flex
 ```
 
-## leet.l
+### leet.l
+
 A forrás egyetlen szabályt tartalmaz, ami nem egetrengetően nehéz, és a többi része a programnak pedig C black magic (legalábbis még számunkra az), így nem részletezem a programot nagyon.
 
 A `.` karakter tetszőleges karaktert jelöl a Flexben, így ez a szabály annyit csinál, hogy bármilyen karakter illeszkedik rá, így minden karakternél, amit kap a porgam a bemenetről, megnézzük hogy tartalmazza-e a LEET szótárunk azt a karaktert, ha igen kiíratjuk valamelyik alternatáv alakját. Ha nem találta meg a szótárban  akkor pedig simán kiírja a karaktert.
