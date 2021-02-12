@@ -2,6 +2,19 @@
 
 **Ez a rész nem lesz számonkérve semmilyen formában, csupán "érdekességnek" szánom**
 
+   * [A lexerekről és a Flexről pár szóban](#a-lexerekről-és-a-flexről-pár-szóban)
+      * [Mik is lennének ezek?](#mik-is-lennének-ezek)
+      * [Mire használjuk a lexikális elemzőket?](#mire-használjuk-a-lexikális-elemzőket)
+      * [Mit nem tudnak a lexerek?](#mit-nem-tudnak-a-lexerek)
+      * [Flex](#flex)
+         * [Egy Flex forrás felépítése](#egy-flex-forrás-felépítése)
+         * [Definíciók](#definíciók)
+         * [Szabályok](#szabályok)
+         * [Saját kód](#saját-kód)
+      * [Mindez a gyakorlatban](#mindez-a-gyakorlatban)
+         * [real.l](#reall)
+         * [leet.l](#leetl)
+
 ## Mik is lennének ezek?
 
 A lexikális elemzők (későbbiekben elvétve: lexer(ek)) feladatát úgy tudnám összefoglalni, hogy a bemetükről beolvasott stringet feldolgozza valamilyen módon; elemeire bontja az eredeti szöveget általunk meghatározott szabályok szerint, és a kapott eredményt (ezeket tokeneknek vagy szimbólumoknak is hívjuk) rendelkezésünkre bocsájtja; hogy ezekkel mit teszünk, már rajtunk múlik. Ignorálhatjuk a tokent, kiírathatjuk fájlba/stdout-ra, továbbadhatjuk egy parsernek, eltárolhatjuk egy adatszerkezetben... Gyakorlatilag akármit amit egy programozási nyelvben adattal tehetünk.
