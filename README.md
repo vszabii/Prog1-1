@@ -4,7 +4,7 @@
 
 ### [Tantárgyi syllabus](https://drive.google.com/file/d/1Ou183AXnXRZcXMgb9jm2J6BgWQUnL8m5/view?usp=sharing)
 
-### [Könyvelés](https://docs.google.com/spreadsheets/d/1tDAgucZAZexAMhHMxiqkfxeX09-vmQEi0LugbZf6TTk/edit?usp=sharing)
+### [Labor tudnivalók és linkek](https://drive.google.com/file/d/1DzsHHGCnswa_Vc90euGQSy6qGo0_QTTS/view?usp=sharing)
 
 ## Feladatok, heti bontásban
 
