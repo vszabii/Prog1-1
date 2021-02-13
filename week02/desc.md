@@ -15,7 +15,11 @@
 ## Összefoglalók
 
 [PPP. Chapter 12.](./book.md)
+
 [PPP. Chapter 12. Drills](./drills.md)
+
 [PPP. Chapter 12. Exercises 1-9.](./extra.md)
+
 [png++](./png.md)
+
 [GNU Make](./make.md)

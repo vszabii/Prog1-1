@@ -24,4 +24,5 @@
 **Határidő *(csak hogy szokjuk)*: 2021. 02. 22. 00:01**
 
 ## Összefoglalók
+
 [Lexerek, Flex](./lexer.md)
