@@ -1,5 +1,7 @@
 # GNU Make
 
+**Ez a rész nem lesz számonkérve semmilyen formában, csupán "érdekességnek" szánom**
+
 A feladatok megoldásánál láttuk, hogy a programjaink fordításához hosszú parancsokat kell begépelnünk, sok paraméterrel, olyan részeket is beleszőve, amiket vagy próbálunk memorizálni vagy visszakeressük mindig amikor ki akarjuk adni a parancsot.
 
 Megnézzük, hogy hogyan kell eljutni ettől:
