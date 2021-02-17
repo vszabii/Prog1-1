@@ -41,7 +41,6 @@ Az FLTK 1.1-es varzióját használjuk, mivel a könyv forrásfájljai is ezzel 
 Fájlok:
 
 [Előadáson használt fájlok](https://github.com/rbesenczi/Prog1/tree/main/week02-06/GUI)
-[Debuggolt fájlok](https://github.com/cortical-iv/hello_fltk)
 
 ## A képernyő, ahogy a program látja
 
