@@ -2,7 +2,7 @@
 
 ## Linkek
 
-### [Tantárgyi syllabus](https://drive.google.com/file/d/1Ou183AXnXRZcXMgb9jm2J6BgWQUnL8m5/view?usp=sharing)
+### [Tantárgyi syllabus](https://drive.google.com/file/d/1wCWpCh1z_qUD-HEAjP6Txp9q4q6OHHVp/view?usp=sharing)
 
 ### [Labor tudnivalók és linkek](https://drive.google.com/file/d/1vX3TH1UGy8zgxkwGq65H0BVG2oC-UhAU/view?usp=sharing)
 
