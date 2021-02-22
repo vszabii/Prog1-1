@@ -1,4 +1,4 @@
-# Week 03
+# Week03
 
 ## A hét feladatai
 
@@ -8,7 +8,7 @@
 ### Előadás Extra
 
 * Készítsük el: *PPP. Chapter 13 Exercises 1-3., 6-7.*
-* Dolgozzuk fel: *Mandelbrot halmaz rajzolása (png++)*
+* Dolgozzuk fel: *Arecibói üzenet (Qt)*
 
 **Határidő: 2021. 03. 08. 00:01**
 

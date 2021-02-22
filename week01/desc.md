@@ -1,4 +1,4 @@
-# Week 01
+# Week01
 
 ## A hét feladatai
 

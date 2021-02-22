@@ -5,9 +5,8 @@ A program fordításához telepítsük a Qt5 keretrendszert (*5.12.2-vel tesztel
 Ubuntun esetében ezt a következő paranccsal tehetjük:
 
 ```bash
-sudo apt install ...
+sudo apt install qt5-default
 ```
-
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
@@ -20,9 +19,9 @@ sudo apt install ...
   - [A prorgam részei](#a-prorgam-részei)
     - [main.cpp](#maincpp)
     - [areciboiablak.h](#areciboiablakh)
+    - [areciboiablak.cpp](#areciboiablakcpp)
 
 <!-- /code_chunk_output -->
-
 
 ## Az üzenet
 
@@ -112,3 +111,56 @@ int function(int a, int b = 0, int c){
 ```
 
 A konstruktor paramétere a sorok és oszlopok száma, illetve az üzenet mellett a `parent` nevű paraméter. Ez a paraméter egy pointer arra az grafikus elemre (azaz Widget-re), ami része az applikációnknak és szeretnénk, hogy az `AreciboAblak` hozzá tartozna. Ha ez az érték nulla (vagy nullpointer), akkor a Widget önálló elemként fog megjelenni.
+
+A `Q_OBJECT` egy preprocesszor makro, ami ebben az esetben annyit jelent, hogy ha ezt a szimbólumot elhelyezzük egy osztály privát részében, akkor ezzel jelezzük, hogy szeretnénk magunk kezelni az eventeket.
+
+Az objektum adattagjai között láthatjuk az üzenetet, a szélesságet és a magasságot, ezek szerepeltek a konstruktorban. Ami nem szerepelt a konstruktorban az a `cellaSzelesseg` és a `cellaMagassag`, ami azt tárolja, hogy az üzenet egy bitjét mekkora cellával ábrázoljuk. A `paintEvent` metódust a `QMainWindow`-ból örököljük (pontosabban sokkan mélyebbről, a `QWidget`-ből, de ez részlet kérdés); ez minden esetben meghívódik, ha az ablakot újra meg kell jeleníteni, és definiálni tudjuk benne, hogy ezt hogyan csinálja. Újra megjelenést idézhet elő, ha például az ablak (de akár egy része is elég) eddig el volt fedve valamilyen másik elem által (például egy legördülő menü által), és amikor ez az állapot megszűnik, akkor újra ki kell "festenünk" az ablakot.
+
+### areciboiablak.cpp
+
+```c++
+#include "areciboiablak.h"
+
+AreciboAblak::AreciboAblak(int szelesseg, int magassag, std::string uzenet,
+                           QWidget *parent)
+  : QMainWindow(parent) {
+    setWindowTitle("Arecibo");
+
+    this->magassag = magassag;
+    this->szelesseg = szelesseg;
+    this->uzenet = uzenet;
+
+    cellaSzelesseg = 8;
+    cellaMagassag = 8;
+
+    setFixedSize(QSize(szelesseg * cellaSzelesseg, magassag * cellaMagassag));
+}
+
+void AreciboAblak::paintEvent(QPaintEvent *) {
+    QPainter qpainter(this);
+
+    for (int i = 0; i < magassag; ++i) {
+        for (int j = 0; j < szelesseg; ++j) {
+
+            if (uzenet.at(i * szelesseg + j) == '1')
+                qpainter.fillRect(j * cellaSzelesseg, i * cellaMagassag,
+                                  cellaSzelesseg, cellaMagassag, Qt::black);
+            else
+                qpainter.fillRect(j * cellaSzelesseg, i * cellaMagassag,
+                                  cellaSzelesseg, cellaMagassag, Qt::white);
+
+            qpainter.setPen(QPen(Qt::gray, 1));
+            qpainter.drawRect(j * cellaSzelesseg, i * cellaMagassag,
+                              cellaSzelesseg, cellaMagassag);
+        }
+    }
+
+    qpainter.end();
+}
+
+AreciboAblak::~AreciboAblak() {}
+```
+
+Láthatjuk, hogy bár a kosntruktorban paraméterként nem jelentek meg a cella méretek, hardcodeolt értéket adunk nekik. A konstruktor utolsó sora megakadályozza, hogy átméretezzük az ablakot.
+
+Az program lelke a `paintEvent` metódusban van. Egy `QPainter` objektummal végigiterálunk az üzenet bitjein. Mivel az üzenetet egy stringben tároltuk el, azaz egy egydimenziós adatszerkezetben, a kirajzolás pedig két dimenzióban fog történni, ezért azoszlopfolytonos bejárás módszerével fogunk a *tömbből* *mátrixot* csinálni. Minden elemről eldöntjük, hogy feketére vagy fehérre kell-e színeznünk, majd eszerint jár el a `QPainter` objektum. Minden iterációban rajzolunk egy szürke keretet a cella köré. A cella színezését kitöltéssel végeztük így ott erre nem volt szükség, de mivel itt vonalakat rajzolunk, ezért szükségeltetik a `setPen()` metódussal megváltoztatni a painter színét.
