@@ -15,3 +15,5 @@
 ## Összefoglalók
 
 [Arecibói üzenet (Qt)](./qt.md)
+
+## [Keddi csoport source](../etc/week03/kedd.cpp)
